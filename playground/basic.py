@@ -1,39 +1,14 @@
-import os
-import base64
-import openai as ai
-import azure.identity as identity
-from dotenv import load_dotenv
-import logging
 
-# Configure logging with a custom format
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s.%(msecs)03d %(levelname)s %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
-logger = logging.getLogger(__name__)
+import openai as ai
+from helpers.logging_config import logger  # Import the logger
+from helpers import helpers
 
 logger.info("Starting the script...")
-load_dotenv()
-
-endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
-deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT")
-api_version = os.getenv("AZURE_OPENAI_API_VERSION")
-logger.info(f"Endpoint: {endpoint}")
-logger.info(f"Deployment: {deployment}")
-
-
-# Initialize Azure OpenAI Service client with Entra ID authentication
-token_provider = identity.get_bearer_token_provider(
-    identity.DefaultAzureCredential(),
-    "https://cognitiveservices.azure.com/.default"
-)
-
-client = ai.AzureOpenAI(
-    azure_endpoint=endpoint,
-    azure_ad_token_provider=token_provider,
-    api_version=api_version,
-)
+client = helpers.get_azure_openai_client()
+# Check if environment variables are loaded correctly
+if not helpers.is_env_loaded():
+    logger.error("Environment variables are not loaded correctly.")
+    raise EnvironmentError("Environment variables are not loaded correctly.")
 
 chat_prompt = [
     {
@@ -45,8 +20,8 @@ chat_prompt = [
 # Include speech result if speech is enabled
 messages = chat_prompt
 
-completion = client.chat.completions.create(
-    model=deployment,
+completion = client.client.chat.completions.create(
+    model=client.deployment,
     messages=messages,
     max_tokens=800,
     temperature=0.7,
