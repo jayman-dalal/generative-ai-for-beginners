@@ -5,10 +5,11 @@ from dotenv import load_dotenv
 from helpers.logging_config import logger  # Import the logger
 
 class AzureOpenAIClient:
-    def __init__(self, client, endpoint, deployment):
+    def __init__(self, client, endpoint, deployment, embeddings_deployment):
         self.client = client
         self.endpoint = endpoint
         self.deployment = deployment
+        self.embeddings_deployment = embeddings_deployment
 
 def is_env_loaded():
     required_vars = ["AZURE_OPENAI_API_VERSION", "AZURE_OPENAI_TENANT_NAME"]
@@ -20,6 +21,7 @@ def get_azure_openai_client():
 
     api_version = os.getenv("AZURE_OPENAI_API_VERSION")
     tenant_name = os.getenv("AZURE_OPENAI_TENANT_NAME")
+    embeddings_deployment = os.getenv("AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT")
     if tenant_name and tenant_name == "MSDN":
         endpoint = os.getenv("AZURE_OPENAI_ENDPOINT_MSDN")
         deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_MSDN")
@@ -46,5 +48,6 @@ def get_azure_openai_client():
             azure_ad_token_provider=token_provider,
             api_version=api_version,
         )
+    logger.info(f"Embedding Deployment: {embeddings_deployment}")
 
-    return AzureOpenAIClient(client, endpoint, deployment)
+    return AzureOpenAIClient(client, endpoint, deployment, embeddings_deployment)

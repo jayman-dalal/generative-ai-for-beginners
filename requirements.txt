@@ -1,10 +1,12 @@
+azure-ai-inference
+azure-identity
 ipywidgets
 matplotlib
 numpy
-pandas
-tqdm
-python-dotenv
 openai
+pandas
+plotly 
+python-dotenv
+scikit-learn
 tiktoken
-azure-ai-inference
-azure-identity
+tqdm
