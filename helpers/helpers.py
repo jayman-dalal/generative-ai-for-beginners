@@ -2,8 +2,10 @@ import os
 import openai as ai
 import azure.identity as identity
 from dotenv import load_dotenv
-from helpers.logging_config import logger  # Import the logger
+import logging
+import helpers.logging_config
 
+logger = logging.getLogger(__name__)
 class AzureOpenAIClient:
     def __init__(self, client, endpoint, deployment, embeddings_deployment):
         self.client = client
