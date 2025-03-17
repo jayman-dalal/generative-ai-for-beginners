@@ -1,5 +1,7 @@
 azure-ai-inference
+azure-cosmos
 azure-identity
+getenv
 ipywidgets
 matplotlib
 numpy
