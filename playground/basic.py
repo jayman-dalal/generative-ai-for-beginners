@@ -1,13 +1,12 @@
 
-import openai as ai
 import logging
-from helpers import helpers
-import logging
-import helpers.logging_config
 import traceback
 
-logger = logging.getLogger(__name__)
-logger.info("Starting the script...")
+import helpers.logging_config as logging_config
+from helpers import helpers
+
+logger = logging_config.setup_logger(logger=logging.getLogger(__name__))
+logger.infoh1("Starting the script...")
 client = None
 
 def main():
@@ -47,6 +46,13 @@ def main():
         logger.error(f"An error occurred: {e}")
         logger.error(traceback.format_exc())
     finally:
-        logger.info("DONE.")
+        logger.debug("This is a debug message.")
+        logger.info("This is a regular info message.")
+        logger.infoh1("This is a special info message.")
+        logger.warning("This is a warning message.")
+        logger.error("This is an error message.")
+        logger.critical("This is a critical message.")
+        logger.infoh1("DONE.")
+
 if __name__ == "__main__":
     main()

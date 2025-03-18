@@ -1,16 +1,16 @@
-import azure.cosmos as cosmos
 import logging
-import openai as ai
 import os
-import pandas as pd
 import traceback
+
+import azure.cosmos as cosmos
+import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 
-import helpers.logging_config
+import helpers.logging_config as logging_config
 from helpers import helpers
 
-logger = logging.getLogger(__name__)
-logger.info("Starting the script...")
+logger = logging_config.setup_logger(logger=logging.getLogger(__name__))
+logger.infoh1("Starting the script...")
 client = None
 current_module_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -168,6 +168,6 @@ def main():
         logger.error(f"An error occurred: {e}")
         logger.error(traceback.format_exc())
     finally:
-        logger.info("DONE.")
+        logger.infoh1("DONE.")
 if __name__ == "__main__":
     main()
